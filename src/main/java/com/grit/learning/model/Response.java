@@ -22,7 +22,7 @@ public class Response {
 
     private String statusCode;
     private String apiStatus;
-    private User user;
+   // private User user;
 
 
     public Response(String message, String statusCode, String apiStatus) {
