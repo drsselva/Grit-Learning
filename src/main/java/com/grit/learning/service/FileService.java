@@ -1,34 +1,24 @@
 package com.grit.learning.service;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GetObjectRequest;
-import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.util.IOUtils;
-import com.amazonaws.util.StringUtils;
 import com.grit.learning.dto.CourseSessionDTO;
-import com.grit.learning.model.CourseSession;
-import com.grit.learning.model.Users;
-import com.grit.learning.util.file.AWSS3DirectoryUtil;
+import com.grit.learning.dto.LearnerDTO;
 
-import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
-
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.UUID;
-
-import org.apache.commons.codec.binary.Base64;
 
 @Service
 @Slf4j
@@ -43,33 +33,30 @@ public class FileService {
 	    
 	   
 
-	    public String uploadFile(Users users, CourseSessionDTO courseSession) throws IOException {
+		public String uploadFile(CourseSessionDTO courseSession, String directoryPath) throws Exception {
 	    	
-	    	
-			String directoryPath="";
+	    	try {
 			
-			
-			 
-			
-			if(directoryPath.isEmpty()) {
-				directoryPath = users.getUserName();
-			}
-			File fileimageObj = convertMultiPartFileToFile(courseSession.getCourseImage());
-	        String fileImageName = System.currentTimeMillis() + "_" + courseSession.getCourseImage().getOriginalFilename();
+			/*File fileimageObj = convertMultiPartFileToFile(courseSession.getCourseImage());
+	        String fileImageName =  courseSession.getCourseImage().getOriginalFilename();
 	        s3Client.putObject(new PutObjectRequest(bucketName,  directoryPath + "/"+fileImageName, fileimageObj));
-	        fileimageObj.delete();
+	        fileimageObj.delete();*/
 			
 			File filepdfObj = convertMultiPartFileToFile(courseSession.getPdfDocument());
-	        String filePdfName = System.currentTimeMillis() + "_" + courseSession.getPdfDocument().getOriginalFilename();
+	        String filePdfName =courseSession.getPdfDocument().getOriginalFilename();
 	        s3Client.putObject(new PutObjectRequest(bucketName,directoryPath + "/"+ filePdfName, filepdfObj));
 	        filepdfObj.delete();
 	        
 	        File filevideoObj = convertMultiPartFileToFile(courseSession.getVideoDoument());
-	        String filevideoName = System.currentTimeMillis() + "_" + courseSession.getVideoDoument().getOriginalFilename();
+	        String filevideoName = courseSession.getVideoDoument().getOriginalFilename();
 	        s3Client.putObject(new PutObjectRequest(bucketName, directoryPath + "/"+filevideoName, filevideoObj));
 	        filevideoObj.delete();
 			
-		
+	    	}
+	    	catch(Exception ex) {
+	    		ex.printStackTrace();
+	    		throw new Exception("File Upload Failed");
+	    	}
 			return   "s3 file upload successfully";
 	    }
 
@@ -77,10 +64,11 @@ public class FileService {
 	    
 
 
-		public byte[] downloadFile(Users users,String fileName) {
+		public byte[] downloadFile(String filePath) {
 
-			String	directoryPath = users.getUserName()+"/";
-			 S3Object s3Object = s3Client.getObject(new GetObjectRequest(bucketName, directoryPath + fileName));
+		
+			      
+			 S3Object s3Object = s3Client.getObject(new GetObjectRequest(bucketName, filePath));
 	      //  S3Object s3Object = s3Client.getObject(bucketName, fileName);
 	        S3ObjectInputStream inputStream = s3Object.getObjectContent();
 	        try {
@@ -104,9 +92,20 @@ public class FileService {
 	        try (FileOutputStream fos = new FileOutputStream(convertedFile)) {
 	            fos.write(file.getBytes());
 	        } catch (IOException e) {
-	            log.error("Error converting multipartFile to file", e);
+	            e.printStackTrace();
 	        }
 	        return convertedFile;
 	    }
+
+
+		public void uploadFile(String directoryPath, String fileName, LearnerDTO request) throws IOException {
+			
+			File fileimageObj = convertMultiPartFileToFile(request.getLearnerFile());
+			s3Client.putObject(new PutObjectRequest(bucketName,  directoryPath + "/"+fileName, fileimageObj));
+			fileimageObj.delete();
+		
+	       
+			
+		}
 	    
 }

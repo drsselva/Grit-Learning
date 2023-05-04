@@ -1,7 +1,5 @@
 package com.grit.learning.model;
 
-import javax.persistence.Entity;
-
 public class Token {
 
     private String token;

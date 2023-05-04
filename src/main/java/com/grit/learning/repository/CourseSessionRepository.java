@@ -1,12 +1,16 @@
 package com.grit.learning.repository;
 
 
-import com.grit.learning.model.CourseSession;
-
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CourseSessionRepository  extends JpaRepository<CourseSession,UUID> {
+import com.grit.learning.model.CourseSession;
 
+public interface CourseSessionRepository  extends JpaRepository<CourseSession,UUID> {
+	
+	CourseSession findByEducatorIdAndCourseTitle(String educatorId, String title);
+
+	List<CourseSession> findByEducatorId(String educatorId);
 }

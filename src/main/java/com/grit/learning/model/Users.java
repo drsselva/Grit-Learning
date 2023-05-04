@@ -1,11 +1,12 @@
 package com.grit.learning.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
@@ -20,15 +21,29 @@ public class Users  extends RecordModifiers implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(generator = "UUID")
-	@GenericGenerator(name = "UUID",strategy = "org.hibernate.id.UUIDGenerator")
+	@GenericGenerator(name = "userUUID",strategy = "org.hibernate.id.UUIDGenerator")
 	@Type(type = "uuid-char")
     private UUID id;
 	private String firstName;
     private String lastName;
-    private String userName;
     private String password;
     private String emailId;
 	private String userRole;
+	private String phone;
+	private String profileImg;
+	
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public String getProfileImg() {
+		return profileImg;
+	}
+	public void setProfileImg(String profileImg) {
+		this.profileImg = profileImg;
+	}
 	public UUID getId() {
 		return id;
 	}
@@ -47,12 +62,7 @@ public class Users  extends RecordModifiers implements Serializable{
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	public String getUserName() {
-		return userName;
-	}
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+
 	public String getPassword() {
 		return password;
 	}

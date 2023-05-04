@@ -1,9 +1,13 @@
 package com.grit.learning.dto;
 
-public class LoginDto {
-	public String emailId;
-	public String password;
-	public String newPassword;
+import lombok.Data;
+
+@Data
+public class SignInDTO {
+
+	private String emailId;
+	private String password;
+	
 	public String getEmailId() {
 		return emailId;
 	}
@@ -15,12 +19,6 @@ public class LoginDto {
 	}
 	public void setPassword(String password) {
 		this.password = password;
-	}
-	public String getNewPassword() {
-		return newPassword;
-	}
-	public void setNewPassword(String newPassword) {
-		this.newPassword = newPassword;
 	}
 	
 	

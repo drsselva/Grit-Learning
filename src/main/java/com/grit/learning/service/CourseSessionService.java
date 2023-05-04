@@ -1,26 +1,14 @@
 package com.grit.learning.service;
 
-import org.apache.commons.codec.binary.Base64;
-
-import com.grit.learning.dto.CourseSessionDTO;
-import com.grit.learning.model.CourseContentFileUpload;
-import com.grit.learning.model.CourseSession;
-import com.grit.learning.model.Response;
-import com.grit.learning.model.Users;
-import com.grit.learning.repository.CourseSessionRepository;
-import com.grit.learning.repository.UsersRepository;
-import com.grit.learning.util.file.AWSS3DirectoryUtil;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.grit.learning.dto.CourseSessionDTO;
+import com.grit.learning.model.CourseSession;
+import com.grit.learning.repository.CourseSessionRepository;
 
 @Service
 public class CourseSessionService {
@@ -31,29 +19,47 @@ public class CourseSessionService {
 	
 	@Autowired
     private CourseSessionRepository courseSessionRepository;
-	
-	@Autowired
-	 private UsersRepository usersRepository;
 
 
 
-	public void saveOrUpdate(CourseSessionDTO request ) throws IOException{
+	public void saveOrUpdate(CourseSessionDTO request ) throws Exception{
 		CourseSession courseSession = new CourseSession();
-		Users users = usersRepository.findByUserName("arul");
-		courseSession.setCourseTitle(request.getCourseTitle());
-		courseSession.setCourseImage(request.getCourseImage().getOriginalFilename());
-		courseSession.setDescription(request.getDescription());
-		courseSession.setDocFile(request.getPdfDocument().getOriginalFilename());
-		courseSession.setOtherFile(request.getVideoDoument().getOriginalFilename());
-		courseSession.setScheduledTime(request.getScheduledTime());
-		courseSession.setEducatorId(users.getId());
-		fileService.uploadFile(users, request);
-		courseSessionRepository.save(courseSession);
-	
+		CourseSession courseExist = courseSessionRepository.findByEducatorIdAndCourseTitle(request.getEducatorId(),request.getCourseTitle());
+		
+		//Users users = usersRepository.findById(request.getEducatorId()).get();
+		
+		if(courseExist == null) {
+			String directoryPath="";
+			
+			if(directoryPath.isEmpty()) {
+				directoryPath = request.getEducatorId()+ "/" + request.getCourseTitle();
+			}
+			courseSession.setCourseTitle(request.getCourseTitle());
+			courseSession.setCourseImage(request.getCourseImage());
+			courseSession.setDescription(request.getDescription());
+			courseSession.setDocFile(directoryPath+"/"+request.getPdfDocument().getOriginalFilename());
+			courseSession.setOtherFile(directoryPath+"/"+request.getVideoDoument().getOriginalFilename());
+			courseSession.setScheduledTime(request.getScheduledTime());
+			courseSession.setEducatorId(request.getEducatorId());
+			
+			fileService.uploadFile(request, directoryPath);
+			courseSessionRepository.save(courseSession);
+		} else {
+			throw new Exception("Course title already exists for the Educator");
+		}
 	}
 	
-	public Iterable<CourseSession> findAll(){
+	public List<CourseSession> findAll(){
+		
+		
 		return courseSessionRepository.findAll();
+		
+	}
+	
+	public List<CourseSession> findByEducatorId(String educatorId){
+		
+		
+		return courseSessionRepository.findByEducatorId(educatorId);
 		
 	}
 	

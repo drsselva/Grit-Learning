@@ -1,11 +1,13 @@
 package com.grit.learning.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Timestamp;
 import java.util.UUID;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
@@ -20,14 +22,14 @@ public class CourseSession  extends RecordModifiers implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(generator = "UUID")
-	@GenericGenerator(name = "UUID",strategy = "org.hibernate.id.UUIDGenerator")
+	@GenericGenerator(name = "courseUUID",strategy = "org.hibernate.id.UUIDGenerator")
 	@Type(type = "uuid-char")
     private UUID id;
 	private String courseTitle;
     private String description;
     private String courseImage;
-    private String scheduledTime;
-    private UUID educatorId;
+    private Timestamp scheduledTime;
+    private String educatorId;
     private String otherFile;
     private String docFile;
 	public UUID getId() {
@@ -54,16 +56,16 @@ public class CourseSession  extends RecordModifiers implements Serializable{
 	public void setCourseImage(String courseImage) {
 		this.courseImage = courseImage;
 	}
-	public String getScheduledTime() {
+	public Timestamp getScheduledTime() {
 		return scheduledTime;
 	}
-	public void setScheduledTime(String scheduledTime) {
+	public void setScheduledTime(Timestamp scheduledTime) {
 		this.scheduledTime = scheduledTime;
 	}
-	public UUID getEducatorId() {
+	public String getEducatorId() {
 		return educatorId;
 	}
-	public void setEducatorId(UUID educatorId) {
+	public void setEducatorId(String educatorId) {
 		this.educatorId = educatorId;
 	}
 	public String getOtherFile() {
