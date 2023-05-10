@@ -3,10 +3,12 @@ package com.grit.learning.controller;
 
 import java.util.UUID;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +23,7 @@ import com.grit.learning.service.CourseSessionService;
 import com.grit.learning.service.FileService;
 import com.grit.learning.service.LearnerService;
 import com.grit.learning.service.MessagePropertyService;
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/learner")
 public class LearnerSessionController {
