@@ -1,8 +1,6 @@
 package com.grit.learning.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.grit.learning.Response.ResponseGenerator;
 import com.grit.learning.Response.TransactionContext;
-import com.grit.learning.dto.ErrorDTO;
 import com.grit.learning.dto.SignInDTO;
 import com.grit.learning.dto.UsersDTO;
 import com.grit.learning.model.Users;
@@ -37,7 +34,7 @@ import com.grit.learning.util.GritUtil;
 @RequestMapping("/api/user")
 public class UsersController {
 
-	//private static final Logger logger = Logger.getLogger(UsersController.class);
+	// private static final Logger logger = Logger.getLogger(UsersController.class);
 
 	@Autowired
 	private ResponseGenerator responseGenerator;
@@ -57,7 +54,7 @@ public class UsersController {
 		TransactionContext context = responseGenerator.generateTransationContext(httpHeader);
 		try {
 			Users isUserExist = usersService.findByEmailId(request.getEmailId());
-			if(isUserExist == null) {
+			if (isUserExist == null) {
 				Users users = new Users();
 				users.setFirstName(request.getFirstName());
 				users.setLastName(request.getLastName());
@@ -66,13 +63,13 @@ public class UsersController {
 				users.setPassword(request.getPassword());
 				usersService.saveOrUpdate(users);
 			} else {
-				throw new Exception("Email Id already exists ");
+				return responseGenerator.errorResponse(context, "Email Id already exists", HttpStatus.FORBIDDEN);
 			}
-			return responseGenerator.successResponse(context, messageSource.getMessage("user.create"), HttpStatus.OK);
+			return responseGenerator.successGetResponse(context, messageSource.getMessage("user.create"), null,
+					HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			//logger.error(e.getMessage(), e);
-			return responseGenerator.errorResponse(context, e.getMessage(), HttpStatus.BAD_REQUEST);
+			return responseGenerator.errorResponse(context, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -82,12 +79,12 @@ public class UsersController {
 		TransactionContext context = responseGenerator.generateTransationContext(httpHeader);
 		Users users = null;
 		Users isUserExist = usersService.findById(request.getId());
-		if(isUserExist != null) {
+		if (isUserExist != null) {
 			users = isUserExist;
 		} else {
-			users = new Users();
+			return responseGenerator.errorResponse(context, "User id not found", HttpStatus.NOT_FOUND);
 		}
-		
+
 		users.setId(request.getId());
 		users.setFirstName(request.getFirstName());
 		users.setLastName(request.getLastName());
@@ -96,11 +93,11 @@ public class UsersController {
 		usersService.saveOrUpdate(users);
 
 		try {
-			return responseGenerator.successResponse(context, messageSource.getMessage("user.update"), HttpStatus.OK);
+			return responseGenerator.successGetResponse(context, messageSource.getMessage("user.update"), null,
+					HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			//logger.error(e.getMessage(), e);
-			return responseGenerator.errorResponse(context, e.getMessage(), HttpStatus.BAD_REQUEST);
+			return responseGenerator.errorResponse(context, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -117,8 +114,8 @@ public class UsersController {
 					userList, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			//logger.error(e.getMessage(), e);
-			return responseGenerator.errorResponse(context, e.getMessage(), HttpStatus.BAD_REQUEST);
+			// logger.error(e.getMessage(), e);
+			return responseGenerator.errorResponse(context, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -129,17 +126,14 @@ public class UsersController {
 		Users userOptional = usersService.findById(userId);
 
 		if (null == userOptional) {
-			return responseGenerator.errorResponse(context, "User id not fount", HttpStatus.BAD_REQUEST);
+			return responseGenerator.errorResponse(context, "User id not found", HttpStatus.NOT_FOUND);
 		}
-
 		try {
-
 			return responseGenerator.successGetResponse(context, messageSource.getMessage("user.get.one"), userOptional,
 					HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			//logger.error(e.getMessage(), e);
-			return responseGenerator.errorResponse(context, e.getMessage(), HttpStatus.BAD_REQUEST);
+			return responseGenerator.errorResponse(context, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -148,18 +142,18 @@ public class UsersController {
 			throws Exception {
 		TransactionContext context = responseGenerator.generateTransationContext(httpHeader);
 		try {
-			Users userOject = usersService.findById(id);
+			Users userObject = usersService.findById(id);
 
-			if (null == userOject) {
-				return responseGenerator.errorResponse(context, "User id not fount", HttpStatus.BAD_REQUEST);
+			if (null == userObject) {
+				return responseGenerator.errorResponse(context, "User id not found", HttpStatus.NOT_FOUND);
 			}
 
-			return responseGenerator.successResponse(context, messageSource.getMessage("user.delete"), HttpStatus.OK);
+			return responseGenerator.successGetResponse(context, messageSource.getMessage("user.delete"), null,
+					HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			//logger.error(e.getMessage(), e);
 			return responseGenerator.errorResponse(context, messageSource.getMessage("user.invalid.delete"),
-					HttpStatus.BAD_REQUEST);
+					HttpStatus.INTERNAL_SERVER_ERROR);
 
 		}
 	}
@@ -167,51 +161,23 @@ public class UsersController {
 	@PostMapping(value = "/login", produces = "application/json")
 	public ResponseEntity<?> login(@RequestBody SignInDTO request, @RequestHeader HttpHeaders httpHeader)
 			throws Exception {
-		//ErrorDTO errorDto = null;
-		//Map<String, Object> response = new HashMap<String, Object>();
 		TransactionContext context = null;
 		try {
 
-			
 			httpHeader.set("token", GritUtil.generateToken());
-			 context = responseGenerator.generateTransationContext(httpHeader);
-		Users userOptional = usersRepository.findByEmailId(request.getEmailId());
-		
-		
-		if (userOptional == null || !userOptional.getPassword().equals(request.getPassword())) {
-			throw new Exception("Invalid username or password.");
-		}
-		
-		/*if (userOptional == null) {
-			errorDto = new ErrorDTO();
-			errorDto.setCode("400");
-			errorDto.setMessage("Invalid Username or Password");
-			response.put("status", 0);
-			response.put("error", errorDto);
-			return ResponseEntity.badRequest().body(response);
-		}
+			context = responseGenerator.generateTransationContext(httpHeader);
+			Users userOptional = usersRepository.findByEmailId(request.getEmailId());
 
-		if (!userOptional.getPassword().equals(request.getPassword())) {
-			errorDto = new ErrorDTO();
-			errorDto.setCode("400");
-			errorDto.setMessage("Invalid Username or Password");
-			response.put("status", 0);
-			response.put("error", errorDto);
-			return ResponseEntity.badRequest().body(response);
-		} else {
-			response.put("status", 1);
-			response.put("message", "Logged in Successfully.!");
-			response.put("isOtpVerified", true);
-
-		}*/
-		
-		
-			return responseGenerator.successGetResponse(context, messageSource.getMessage("user.login"), userOptional,
-					HttpStatus.OK);
+			if (userOptional == null || !userOptional.getPassword().equals(request.getPassword())) {
+				return responseGenerator.errorResponse(context, "Invalid username or password.",
+						HttpStatus.UNAUTHORIZED);
+			} else {
+				return responseGenerator.successGetResponse(context, messageSource.getMessage("user.login"),
+						userOptional, HttpStatus.OK);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			//logger.error(e.getMessage(), e);
-			return responseGenerator.errorResponse(context, e.getMessage(), HttpStatus.BAD_REQUEST);
+			return responseGenerator.errorResponse(context, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 	}

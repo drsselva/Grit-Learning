@@ -1,22 +1,19 @@
 package com.grit.learning.Response;
 
 public class Error {
-	private String Code;
-	private String Reason;
-	public String getCode() {
-		return Code;
+	private String errorCode;
+	private String reason;
+	
+	public String getErrorCode() {
+		return errorCode;
 	}
-	public void setCode(String code) {
-		Code = code;
+	public void setErrorCode(String errorCode) {
+		this.errorCode = errorCode;
 	}
 	public String getReason() {
-		return Reason;
+		return reason;
 	}
 	public void setReason(String reason) {
-		Reason = reason;
+		this.reason = reason;
 	}
-	
-	
-	
-
 }

@@ -1,14 +1,15 @@
 package com.grit.learning.Response;
 
-import java.util.List;
-
 public class Response {
 
 	private Object data;
 	private Error error;
 	private String timeStamp;
 	private String message;
-	private List<String> errorMessages;
+	private String status;
+	private String code;
+	
+	//private List<String> errorMessages;
 	public Object getData() {
 		return data;
 	}
@@ -33,12 +34,25 @@ public class Response {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	public List<String> getErrorMessages() {
-		return errorMessages;
+	public String getStatus() {
+		return status;
 	}
-	public void setErrorMessages(List<String> errorMessages) {
-		this.errorMessages = errorMessages;
+	public void setStatus(String status) {
+		this.status = status;
 	}
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	
+//	public List<String> getErrorMessages() {
+//		return errorMessages;
+//	}
+//	public void setErrorMessages(List<String> errorMessages) {
+//		this.errorMessages = errorMessages;
+//	}
 	
 	
 	

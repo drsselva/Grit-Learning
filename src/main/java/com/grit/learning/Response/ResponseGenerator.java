@@ -3,9 +3,6 @@ package com.grit.learning.Response;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.xml.crypto.Data;
-
-import org.apache.log4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,21 +12,6 @@ import org.springframework.stereotype.Component;
 public class ResponseGenerator {
 	//private static final Logger logger = Logger.getLogger(ResponseGenerator.class);
 	
-	public ResponseEntity<Response> successResponse(TransactionContext context, Object object, HttpStatus httpStatus) {
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("token", context.getToken());
-		/*headers.add("correlationId", context.getCorrelationId());
-		headers.add("ApplicationLabel", context.getApplicationLabel());*/
-		headers.add("Content-Type", "application/json");
-		Response response = new Response();
-		response.setData(object);
-		response.setTimeStamp(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()));
-		//logger.debug("response class is " + Data.class);
-		//logger.debug("response status is " + httpStatus.toString());
-		ResponseEntity<Response> responseEntity = new ResponseEntity<Response>(response, headers, httpStatus);
-		return responseEntity;
-	}
-	
 	public ResponseEntity<Response> errorResponse(TransactionContext context, String errorMessage,HttpStatus httpStatus) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("token", context.getToken());
@@ -37,10 +19,12 @@ public class ResponseGenerator {
 		headers.add("ApplicationLabel", context.getApplicationLabel());*/
 		headers.add("Content-Type", "application/json");
 		Error error = new Error();
-		error.setCode(httpStatus.toString() + "0001");
+		error.setErrorCode(httpStatus.toString());
 		error.setReason(errorMessage);
 		Response response = new Response();
 		response.setError(error);
+		response.setStatus("failure");
+		response.setCode("1");
 		response.setTimeStamp(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()));
 		ResponseEntity<Response> responseEntity = new ResponseEntity<Response>(response, headers, httpStatus);
 		return responseEntity;
@@ -83,6 +67,8 @@ public class ResponseGenerator {
 		Response response = new Response();
 		response.setData(object);
 		response.setMessage(message);
+		response.setCode("0");
+		response.setStatus("success");
 		response.setTimeStamp(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()));
 		//logger.debug("response class is " + Data.class);
 		//logger.debug("response status is " + httpStatus.toString());

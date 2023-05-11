@@ -80,12 +80,12 @@ public class CourseSessionController {
 			request.setScheduledTime(Timestamp.valueOf(scheduledTime));
 			request.setDescription(description);
 			courseSessionService.saveOrUpdate(request);
-			return responseGenerator.successResponse(context, messageSource.getMessage("course.session.create"),
-				HttpStatus.OK);
+			return responseGenerator.successGetResponse(context, messageSource.getMessage("course.session.create"),
+				null, HttpStatus.OK);
 		}catch(Exception e) {
 			e.printStackTrace();
 		//logger.error(e.getMessage(), e);
-		return responseGenerator.errorResponse(context, e.getMessage(), HttpStatus.BAD_REQUEST);}
+		return responseGenerator.errorResponse(context, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);}
 	}
     
    
@@ -111,7 +111,7 @@ public class CourseSessionController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			//logger.error(e.getMessage(), e);
-			return responseGenerator.errorResponse(context, e.getMessage(), HttpStatus.BAD_REQUEST);
+			return responseGenerator.errorResponse(context, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
@@ -146,7 +146,7 @@ public class CourseSessionController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			//logger.error(e.getMessage(), e);
-			return responseGenerator.errorResponse(context, e.getMessage(), HttpStatus.BAD_REQUEST);
+			return responseGenerator.errorResponse(context, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
@@ -188,7 +188,7 @@ public class CourseSessionController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			//logger.error(e.getMessage(), e);
-			return responseGenerator.errorResponse(context, e.getMessage(), HttpStatus.BAD_REQUEST);
+			return responseGenerator.errorResponse(context, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 		

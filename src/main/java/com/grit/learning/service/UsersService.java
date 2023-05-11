@@ -1,6 +1,7 @@
 package com.grit.learning.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,13 @@ public class UsersService {
 	}
 
 	public Users findById(UUID id) {
-		return usersRepository.findById(id).get();
+		Optional<Users> users = usersRepository.findById(id);
+		
+		if(users.isPresent()) {
+			return users.get();
+		} else {
+			return null;
+		}
 	}
 
 	public void Users(UUID id) {

@@ -1,6 +1,7 @@
 package com.grit.learning.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +65,12 @@ public class CourseSessionService {
 	}
 	
 	public CourseSession findById(UUID id){
-		return courseSessionRepository.findById(id).get();
+		Optional<CourseSession> courseSession = courseSessionRepository.findById(id);
+		if(courseSession.isPresent()) {
+			return courseSession.get();
+		} else {
+			return null;
+		}
 	}
 	
 	public void CourseSession(UUID id){

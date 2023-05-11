@@ -1,28 +1,17 @@
 package com.grit.learning.service;
 
-import org.apache.commons.codec.binary.Base64;
-
-import com.grit.learning.dto.CourseSessionDTO;
-import com.grit.learning.dto.LearnerDTO;
-import com.grit.learning.model.CourseContentFileUpload;
-import com.grit.learning.model.CourseSession;
-import com.grit.learning.model.Learner;
-import com.grit.learning.model.Response;
-import com.grit.learning.model.Users;
-import com.grit.learning.repository.CourseSessionRepository;
-import com.grit.learning.repository.LearnerRepository;
-import com.grit.learning.repository.UsersRepository;
-import com.grit.learning.util.file.AWSS3DirectoryUtil;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import com.grit.learning.dto.LearnerDTO;
+import com.grit.learning.model.CourseSession;
+import com.grit.learning.model.Learner;
+import com.grit.learning.repository.CourseSessionRepository;
+import com.grit.learning.repository.LearnerRepository;
 
 @Service
 public class LearnerService {
@@ -68,7 +57,12 @@ public class LearnerService {
 	}
 	
 	public Learner findById(UUID id){
-		return learnerRepository.findById(id).get();
+		Optional<Learner> learner = learnerRepository.findById(id);
+		if(learner.isPresent()) {
+			return learner.get();
+		} else {
+			return null;
+		}
 	}
 	
 	public void Learner(UUID id){
