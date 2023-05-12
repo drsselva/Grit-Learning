@@ -17,6 +17,8 @@ public class CourseSessionDTO {
     private String videoDoumentName;
     private String pdfDocumentName;
     private String courseImageName;
+    private String bucketUrl;
+    
 	public UUID getId() {
 		return id;
 	}
@@ -82,5 +84,11 @@ public class CourseSessionDTO {
 	}
 	public void setCourseImageName(String courseImageName) {
 		this.courseImageName = courseImageName;
+	}
+	public String getBucketUrl() {
+		return bucketUrl;
+	}
+	public void setBucketUrl(String bucketUrl) {
+		this.bucketUrl = bucketUrl;
 	}
 }

@@ -137,6 +137,7 @@ public class CourseSessionController {
 				courseSessionDTO.setVideoDoumentName(courseSession.getOtherFile());
 				courseSessionDTO.setPdfDocumentName(courseSession.getDocFile());
 				courseSessionDTO.setCourseImageName(courseSession.getCourseImage());
+				courseSessionDTO.setBucketUrl(bucketUrl);
 				response.add(courseSessionDTO);
 			}
 			
@@ -172,6 +173,7 @@ public class CourseSessionController {
 				courseSessionDTO.setVideoDoumentName(courseSession.getOtherFile());
 				courseSessionDTO.setPdfDocumentName(courseSession.getDocFile());
 				courseSessionDTO.setCourseImageName(courseSession.getCourseImage());
+				courseSessionDTO.setBucketUrl(bucketUrl);
 				
 				int flag = currentTimestamp.compareTo(courseSession.getScheduledTime()); 
 				if(flag>=0) {
