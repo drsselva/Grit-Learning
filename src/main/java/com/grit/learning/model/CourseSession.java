@@ -7,6 +7,8 @@ import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -29,9 +31,26 @@ public class CourseSession  extends RecordModifiers implements Serializable{
     private String description;
     private String courseImage;
     private Timestamp scheduledTime;
-    private String educatorId;
+    
+    @ManyToOne()
+   	@JoinColumn(name = "educator_id" ,referencedColumnName = "id")
+    private Users educator;
+    
     private String otherFile;
     private String docFile;
+    @ManyToOne()
+	@JoinColumn(name = "course_category_id" ,referencedColumnName = "id")
+    private CourseCategory courseCategory;
+    
+    
+    
+    
+	public CourseCategory getCourseCategory() {
+		return courseCategory;
+	}
+	public void setCourseCategory(CourseCategory courseCategory) {
+		this.courseCategory = courseCategory;
+	}
 	public UUID getId() {
 		return id;
 	}
@@ -62,12 +81,7 @@ public class CourseSession  extends RecordModifiers implements Serializable{
 	public void setScheduledTime(Timestamp scheduledTime) {
 		this.scheduledTime = scheduledTime;
 	}
-	public String getEducatorId() {
-		return educatorId;
-	}
-	public void setEducatorId(String educatorId) {
-		this.educatorId = educatorId;
-	}
+	
 	public String getOtherFile() {
 		return otherFile;
 	}
@@ -80,6 +94,14 @@ public class CourseSession  extends RecordModifiers implements Serializable{
 	public void setDocFile(String docFile) {
 		this.docFile = docFile;
 	}
+	public Users getEducator() {
+		return educator;
+	}
+	public void setEducator(Users educator) {
+		this.educator = educator;
+	}
+	
     
+	
 	
 }

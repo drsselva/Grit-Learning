@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.grit.learning.dto.CourseSessionDTO;
+import com.grit.learning.model.CourseCategory;
 import com.grit.learning.model.CourseSession;
+import com.grit.learning.model.Users;
+import com.grit.learning.repository.CourseCategoryRepository;
 import com.grit.learning.repository.CourseSessionRepository;
 
 @Service
@@ -20,12 +23,19 @@ public class CourseSessionService {
 	
 	@Autowired
     private CourseSessionRepository courseSessionRepository;
+	
+	@Autowired
+	private CourseCategoryService courseCategoryService;
+	
+
+	@Autowired
+	private UsersService usersService;
 
 
 
 	public void saveOrUpdate(CourseSessionDTO request ) throws Exception{
 		CourseSession courseSession = new CourseSession();
-		CourseSession courseExist = courseSessionRepository.findByEducatorIdAndCourseTitle(request.getEducatorId(),request.getCourseTitle());
+		CourseSession courseExist = courseSessionRepository.findByEducatorIdAndCourseTitle(request.getEducator().getId(),request.getCourseTitle());
 		
 		//Users users = usersRepository.findById(request.getEducatorId()).get();
 		
@@ -33,7 +43,7 @@ public class CourseSessionService {
 			String directoryPath="";
 			
 			if(directoryPath.isEmpty()) {
-				directoryPath = request.getEducatorId()+ "/" + request.getCourseTitle();
+				directoryPath = request.getEducator().getId()+ "/" + request.getCourseTitle();
 			}
 			courseSession.setCourseTitle(request.getCourseTitle());
 			courseSession.setCourseImage(request.getCourseImage());
@@ -41,7 +51,18 @@ public class CourseSessionService {
 			courseSession.setDocFile(directoryPath+"/"+request.getPdfDocument().getOriginalFilename());
 			courseSession.setOtherFile(directoryPath+"/"+request.getVideoDoument().getOriginalFilename());
 			courseSession.setScheduledTime(request.getScheduledTime());
-			courseSession.setEducatorId(request.getEducatorId());
+			
+			Users educator= usersService.findById(request.getEducator().getId());
+			courseSession.setEducator(educator);
+			
+			
+			Optional<CourseCategory>  courseCategoryOptional = courseCategoryService.findById(request.getCourseCategoryDTO().getId());
+			
+			if(courseCategoryOptional != null)
+				courseSession.setCourseCategory(courseCategoryOptional.get());
+			else
+				throw new Exception("Course category not found");
+			
 			
 			fileService.uploadFile(request, directoryPath);
 			courseSessionRepository.save(courseSession);
@@ -75,6 +96,11 @@ public class CourseSessionService {
 	
 	public void CourseSession(UUID id){
 		courseSessionRepository.deleteById(id);
+	}
+
+	public List<CourseSession> findByCourseCategoryId(UUID id) {
+		
+		return courseSessionRepository.findByCourseCategoryId(id);
 	}
 
 	

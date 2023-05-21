@@ -2,6 +2,8 @@ package com.grit.learning.dto;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+@JsonInclude(JsonInclude.Include.NON_NULL)  
 public class UsersDTO {
 	 	private UUID id;
 		private String firstName;

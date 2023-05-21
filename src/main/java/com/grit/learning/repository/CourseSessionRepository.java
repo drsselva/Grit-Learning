@@ -10,7 +10,9 @@ import com.grit.learning.model.CourseSession;
 
 public interface CourseSessionRepository  extends JpaRepository<CourseSession,UUID> {
 	
-	CourseSession findByEducatorIdAndCourseTitle(String educatorId, String title);
+	CourseSession findByEducatorIdAndCourseTitle(UUID educatorId, String title);
 
 	List<CourseSession> findByEducatorId(String educatorId);
+
+	List<CourseSession> findByCourseCategoryId(UUID id);
 }

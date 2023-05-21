@@ -112,7 +112,7 @@ public class UsersController {
 			return responseGenerator.successGetResponse(context, messageSource.getMessage("user.get.list"),
 
 					userList, HttpStatus.OK);
-		} catch (Exception e) {
+  		} catch (Exception e) {
 			e.printStackTrace();
 			// logger.error(e.getMessage(), e);
 			return responseGenerator.errorResponse(context, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

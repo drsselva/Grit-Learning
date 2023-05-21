@@ -5,12 +5,14 @@ import java.util.UUID;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+@JsonInclude(JsonInclude.Include.NON_NULL)  
 public class CourseSessionDTO {
 	private UUID id;
 	private String courseTitle;
     private String description;
     private Timestamp scheduledTime;
-    private String educatorId;
+    private UsersDTO educator;
     private MultipartFile videoDoument;
     private MultipartFile pdfDocument;
     private String courseImage;
@@ -18,7 +20,17 @@ public class CourseSessionDTO {
     private String pdfDocumentName;
     private String courseImageName;
     private String bucketUrl;
+    private CourseCategoryDTO courseCategoryDTO;
     
+  
+    
+	public CourseCategoryDTO getCourseCategoryDTO() {
+		return courseCategoryDTO;
+	}
+	public void setCourseCategoryDTO(CourseCategoryDTO courseCategoryDTO) {
+		this.courseCategoryDTO = courseCategoryDTO;
+	}
+	
 	public UUID getId() {
 		return id;
 	}
@@ -43,12 +55,7 @@ public class CourseSessionDTO {
 	public void setScheduledTime(Timestamp scheduledTime) {
 		this.scheduledTime = scheduledTime;
 	}
-	public String getEducatorId() {
-		return educatorId;
-	}
-	public void setEducatorId(String educatorId) {
-		this.educatorId = educatorId;
-	}
+	
 	public MultipartFile getVideoDoument() {
 		return videoDoument;
 	}
@@ -91,4 +98,15 @@ public class CourseSessionDTO {
 	public void setBucketUrl(String bucketUrl) {
 		this.bucketUrl = bucketUrl;
 	}
+	public UsersDTO getEducator() {
+		return educator;
+	}
+	public void setEducator(UsersDTO educator) {
+		this.educator = educator;
+	}
+	
+	
+	
+	
+	
 }
