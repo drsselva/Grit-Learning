@@ -53,12 +53,11 @@ public class CourseSessionService {
 			}
 			courseSession.setDocFile(directoryPath+"/"+request.getPdfDocument().getOriginalFilename());
 			courseSession.setScheduledTime(request.getScheduledTime());
-<<<<<<< HEAD
+
 
 //			courseSession.setEducatorId(request.getEducatorId());
 			courseSession.setCourseLink(request.getCourseLink());
-=======
->>>>>>> e0c7355ee107f30415092f7d17eb6d0c45d28e8f
+
 			
 			Users educator= usersService.findById(request.getEducator().getId());
 			courseSession.setEducator(educator);
@@ -71,10 +70,7 @@ public class CourseSessionService {
 			else
 				throw new Exception("Course category not found");
 			
-<<<<<<< HEAD
 
-=======
->>>>>>> e0c7355ee107f30415092f7d17eb6d0c45d28e8f
 			
 			fileService.uploadFile(request, directoryPath);
 			courseSessionRepository.save(courseSession);
