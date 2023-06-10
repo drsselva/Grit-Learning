@@ -20,12 +20,19 @@ public class CourseSessionDTO {
     private String pdfDocumentName;
     private String courseImageName;
     private String bucketUrl;
+<<<<<<< HEAD
     private String courseLink;
     private CourseCategoryDTO courseCategoryDTO;
 
     
   
     
+=======
+    private CourseCategoryDTO courseCategoryDTO;
+    
+  
+    
+>>>>>>> e0c7355ee107f30415092f7d17eb6d0c45d28e8f
 	public CourseCategoryDTO getCourseCategoryDTO() {
 		return courseCategoryDTO;
 	}
@@ -100,6 +107,7 @@ public class CourseSessionDTO {
 	public void setBucketUrl(String bucketUrl) {
 		this.bucketUrl = bucketUrl;
 	}
+<<<<<<< HEAD
 
 	public String getCourseLink() {
 		return courseLink;
@@ -108,11 +116,21 @@ public class CourseSessionDTO {
 		this.courseLink = courseLink;
 	}
 
+=======
+>>>>>>> e0c7355ee107f30415092f7d17eb6d0c45d28e8f
 	public UsersDTO getEducator() {
 		return educator;
 	}
 	public void setEducator(UsersDTO educator) {
 		this.educator = educator;
 	}
+<<<<<<< HEAD
 
+=======
+	
+	
+	
+	
+	
+>>>>>>> e0c7355ee107f30415092f7d17eb6d0c45d28e8f
 }

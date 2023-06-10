@@ -38,8 +38,11 @@ public class CourseSession  extends RecordModifiers implements Serializable{
     
     private String otherFile;
     private String docFile;
+<<<<<<< HEAD
     private String courseLink;
 
+=======
+>>>>>>> e0c7355ee107f30415092f7d17eb6d0c45d28e8f
     @ManyToOne()
 	@JoinColumn(name = "course_category_id" ,referencedColumnName = "id")
     private CourseCategory courseCategory;
@@ -53,7 +56,10 @@ public class CourseSession  extends RecordModifiers implements Serializable{
 	public void setCourseCategory(CourseCategory courseCategory) {
 		this.courseCategory = courseCategory;
 	}
+<<<<<<< HEAD
 
+=======
+>>>>>>> e0c7355ee107f30415092f7d17eb6d0c45d28e8f
 	public UUID getId() {
 		return id;
 	}
@@ -97,6 +103,7 @@ public class CourseSession  extends RecordModifiers implements Serializable{
 	public void setDocFile(String docFile) {
 		this.docFile = docFile;
 	}
+<<<<<<< HEAD
 
 	public String getCourseLink() {
 		return courseLink;
@@ -105,6 +112,8 @@ public class CourseSession  extends RecordModifiers implements Serializable{
 		this.courseLink = courseLink;
 	}
 
+=======
+>>>>>>> e0c7355ee107f30415092f7d17eb6d0c45d28e8f
 	public Users getEducator() {
 		return educator;
 	}
@@ -112,7 +121,10 @@ public class CourseSession  extends RecordModifiers implements Serializable{
 		this.educator = educator;
 	}
 	
+<<<<<<< HEAD
 
+=======
+>>>>>>> e0c7355ee107f30415092f7d17eb6d0c45d28e8f
     
 	
 	

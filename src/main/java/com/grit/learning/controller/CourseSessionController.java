@@ -5,7 +5,10 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+<<<<<<< HEAD
 import java.util.Map;
+=======
+>>>>>>> e0c7355ee107f30415092f7d17eb6d0c45d28e8f
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,9 +71,14 @@ public class CourseSessionController {
 			@RequestParam(value = "scheduledTime") String scheduledTime,
 			@RequestParam(value = "description") String description,
 			@RequestParam(value = "educatorId") UUID educatorId,
+<<<<<<< HEAD
 			@RequestParam(value = "courseCategoryId") UUID courseCategoryId,
 			@RequestParam(value = "courseLink") String courseLink
 			) throws Exception{	
+=======
+			@RequestParam(value = "courseCategoryId") UUID courseCategoryId) throws Exception {
+
+>>>>>>> e0c7355ee107f30415092f7d17eb6d0c45d28e8f
 		TransactionContext context = responseGenerator.generateTransationContext(httpHeader);
 		try {
 
@@ -87,10 +95,18 @@ public class CourseSessionController {
 			request.setScheduledTime(Timestamp.valueOf(scheduledTime));
 			request.setDescription(description);
 
+<<<<<<< HEAD
 			request.setCourseLink(courseLink);
 			CourseCategoryDTO courseCategoryDTO = new CourseCategoryDTO();
 			courseCategoryDTO.setId(courseCategoryId);
 			request.setCourseCategoryDTO(courseCategoryDTO);
+=======
+			CourseCategoryDTO courseCategoryDTO = new CourseCategoryDTO();
+
+			courseCategoryDTO.setId(courseCategoryId);
+			request.setCourseCategoryDTO(courseCategoryDTO);
+
+>>>>>>> e0c7355ee107f30415092f7d17eb6d0c45d28e8f
 			courseSessionService.saveOrUpdate(request);
 			return responseGenerator.successGetResponse(context, messageSource.getMessage("course.session.create"),
 					null, HttpStatus.OK);
@@ -131,6 +147,7 @@ public class CourseSessionController {
 		try {
 
 			List<CourseSession> courseSessionList = courseSessionService.findByEducatorId(educatorId);
+<<<<<<< HEAD
 
 			HashMap<String,List<CourseSessionDTO>> response = new HashMap<>();
 			List<CourseSessionDTO> responseDto = new ArrayList<>();
@@ -139,12 +156,18 @@ public class CourseSessionController {
 			Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
 		
 			
+=======
+			List<CourseSessionDTO> response = new ArrayList<>();
+>>>>>>> e0c7355ee107f30415092f7d17eb6d0c45d28e8f
 			// Users users = usersRepository.findByUserName("arul");
 			// Users users = usersRepository.findById(educatorId).get();
 			// String name = bucketUrl + users.getUserName()+"/";
 
 			for (CourseSession courseSession : courseSessionList) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> e0c7355ee107f30415092f7d17eb6d0c45d28e8f
 				CourseSessionDTO courseSessionDTO = new CourseSessionDTO();
 				courseSessionDTO.setId(courseSession.getId());
 				courseSessionDTO.setCourseTitle(courseSession.getCourseTitle());
@@ -180,6 +203,7 @@ public class CourseSessionController {
 				
 			}
 
+<<<<<<< HEAD
 			response.put("response",responseDto);
 			response.put("currentLinkResponse",currentLinkResponse);
 			
@@ -189,6 +213,10 @@ public class CourseSessionController {
 
 
 			
+=======
+			return responseGenerator.successGetResponse(context, messageSource.getMessage("course.session.get.list"),
+					response, HttpStatus.OK);
+>>>>>>> e0c7355ee107f30415092f7d17eb6d0c45d28e8f
 		} catch (Exception e) {
 			e.printStackTrace();
 			// logger.error(e.getMessage(), e);
@@ -227,6 +255,7 @@ public class CourseSessionController {
 				courseSessionDTO.setCourseImageName(courseSession.getCourseImage());
 				courseSessionDTO.setBucketUrl(bucketUrl);
 
+<<<<<<< HEAD
 				courseSessionDTO.setCourseLink(courseSession.getCourseLink());
 				
 				int flag = currentTimestamp.compareTo(courseSession.getScheduledTime()); 
@@ -242,6 +271,9 @@ public class CourseSessionController {
 					}
 
 				
+=======
+				int flag = currentTimestamp.compareTo(courseSession.getScheduledTime());
+>>>>>>> e0c7355ee107f30415092f7d17eb6d0c45d28e8f
 				if (flag >= 0) {
 					activeResponse.add(courseSessionDTO);
 
@@ -251,7 +283,11 @@ public class CourseSessionController {
 
 			}
 			response.put("activeResponse", activeResponse);
+<<<<<<< HEAD
 			response.put("inActiveResponse", inActiveResponse);}
+=======
+			response.put("inActiveResponse", inActiveResponse);
+>>>>>>> e0c7355ee107f30415092f7d17eb6d0c45d28e8f
 
 			return responseGenerator.successGetResponse(context, messageSource.getMessage("course.session.get.list"),
 					response, HttpStatus.OK);
