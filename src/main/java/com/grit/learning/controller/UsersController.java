@@ -61,6 +61,8 @@ public class UsersController {
 				users.setEmailId(request.getEmailId());
 				users.setUserRole(request.getUserRole());
 				users.setPassword(request.getPassword());
+				users.setPhone(request.getPhone());
+				users.setProfileImg(request.getProfileImg());
 				usersService.saveOrUpdate(users);
 			} else {
 				return responseGenerator.errorResponse(context, "Email Id already exists", HttpStatus.FORBIDDEN);
@@ -107,14 +109,13 @@ public class UsersController {
 		try {
 
 			List<Users> userList = usersService.findAll();
-			//userList.sort((o1, o2) -> o1.getFirstName().compareToIgnoreCase(o2.getFirstName()));
+			userList.sort((o1, o2) -> o1.getFirstName().compareToIgnoreCase(o2.getFirstName()));
 
 			return responseGenerator.successGetResponse(context, messageSource.getMessage("user.get.list"),
 
 					userList, HttpStatus.OK);
   		} catch (Exception e) {
 			e.printStackTrace();
-			// logger.error(e.getMessage(), e);
 			return responseGenerator.errorResponse(context, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
