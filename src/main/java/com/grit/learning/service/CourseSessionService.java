@@ -38,10 +38,13 @@ public class CourseSessionService {
 			courseSession.setCourseTitle(request.getCourseTitle());
 			courseSession.setCourseImage(request.getCourseImage());
 			courseSession.setDescription(request.getDescription());
+			if(!request.getVideoDoument().isEmpty()) {
+				courseSession.setOtherFile(directoryPath+"/"+request.getVideoDoument().getOriginalFilename());
+			}
 			courseSession.setDocFile(directoryPath+"/"+request.getPdfDocument().getOriginalFilename());
-			courseSession.setOtherFile(directoryPath+"/"+request.getVideoDoument().getOriginalFilename());
 			courseSession.setScheduledTime(request.getScheduledTime());
 			courseSession.setEducatorId(request.getEducatorId());
+			courseSession.setCourseLink(request.getCourseLink());
 			
 			fileService.uploadFile(request, directoryPath);
 			courseSessionRepository.save(courseSession);
@@ -53,14 +56,14 @@ public class CourseSessionService {
 	public List<CourseSession> findAll(){
 		
 		
-		return courseSessionRepository.findAll();
+		return courseSessionRepository.findAllByOrderByScheduledTimeDesc();
 		
 	}
 	
 	public List<CourseSession> findByEducatorId(String educatorId){
 		
 		
-		return courseSessionRepository.findByEducatorId(educatorId);
+		return courseSessionRepository.findByEducatorIdOrderByScheduledTimeDesc(educatorId);
 		
 	}
 	

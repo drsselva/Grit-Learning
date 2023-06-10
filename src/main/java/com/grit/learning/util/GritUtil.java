@@ -6,6 +6,7 @@ import com.grit.learning.model.Token;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.security.SecureRandom;
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.Date;
@@ -40,5 +41,17 @@ public class GritUtil {
         long currentTimeInMilisecond = Instant.now().toEpochMilli();
         return token.append(currentTimeInMilisecond).append("-")
                .append(UUID.randomUUID().toString()).toString();
+    }
+    
+    public static long diffInMinutes(Timestamp t1, Timestamp t2){
+    	  long milliseconds1 = t1.getTime();
+    	  long milliseconds2 = t2.getTime();
+
+    	  long diff = milliseconds1 - milliseconds2;
+    	  //long diffSeconds = diff / 1000;
+    	  long diffMinutes = diff / (60 * 1000);
+    	  //long diffHours = diff / (60 * 60 * 1000);
+    	  //long diffDays = diff / (24 * 60 * 60 * 1000);
+    	  return diffMinutes;
     }
 }

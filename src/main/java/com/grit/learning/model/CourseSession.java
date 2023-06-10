@@ -32,6 +32,8 @@ public class CourseSession  extends RecordModifiers implements Serializable{
     private String educatorId;
     private String otherFile;
     private String docFile;
+    private String courseLink;
+    
 	public UUID getId() {
 		return id;
 	}
@@ -79,6 +81,12 @@ public class CourseSession  extends RecordModifiers implements Serializable{
 	}
 	public void setDocFile(String docFile) {
 		this.docFile = docFile;
+	}
+	public String getCourseLink() {
+		return courseLink;
+	}
+	public void setCourseLink(String courseLink) {
+		this.courseLink = courseLink;
 	}
     
 	

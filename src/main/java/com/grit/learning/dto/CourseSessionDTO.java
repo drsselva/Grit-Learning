@@ -18,6 +18,7 @@ public class CourseSessionDTO {
     private String pdfDocumentName;
     private String courseImageName;
     private String bucketUrl;
+    private String courseLink;
     
 	public UUID getId() {
 		return id;
@@ -90,5 +91,11 @@ public class CourseSessionDTO {
 	}
 	public void setBucketUrl(String bucketUrl) {
 		this.bucketUrl = bucketUrl;
+	}
+	public String getCourseLink() {
+		return courseLink;
+	}
+	public void setCourseLink(String courseLink) {
+		this.courseLink = courseLink;
 	}
 }

@@ -69,7 +69,12 @@ public class LearnerService {
 		learnerRepository.deleteById(id);
 	}
 
-	
+	public List<Learner> findAllByCourseId(UUID courseId){
+		
+		
+		return learnerRepository.findByCourseId(courseId);
+		
+	}
 	
 
 }

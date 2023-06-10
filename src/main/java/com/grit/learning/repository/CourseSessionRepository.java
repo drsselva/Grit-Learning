@@ -12,5 +12,7 @@ public interface CourseSessionRepository  extends JpaRepository<CourseSession,UU
 	
 	CourseSession findByEducatorIdAndCourseTitle(String educatorId, String title);
 
-	List<CourseSession> findByEducatorId(String educatorId);
+	List<CourseSession> findByEducatorIdOrderByScheduledTimeDesc(String educatorId);
+
+	List<CourseSession> findAllByOrderByScheduledTimeDesc();
 }

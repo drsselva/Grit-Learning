@@ -107,7 +107,7 @@ public class UsersController {
 		try {
 
 			List<Users> userList = usersService.findAll();
-			userList.sort((o1, o2) -> o1.getFirstName().compareToIgnoreCase(o2.getFirstName()));
+			//userList.sort((o1, o2) -> o1.getFirstName().compareToIgnoreCase(o2.getFirstName()));
 
 			return responseGenerator.successGetResponse(context, messageSource.getMessage("user.get.list"),
 

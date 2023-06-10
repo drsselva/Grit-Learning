@@ -3,6 +3,7 @@ package com.grit.learning.model;
 import java.io.Serializable;
 import java.util.UUID;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -22,11 +23,22 @@ public class Learner  extends RecordModifiers implements Serializable{
 	@Id
 	@GeneratedValue(generator = "UUID")
 	@GenericGenerator(name = "learnerUUID",strategy = "org.hibernate.id.UUIDGenerator")
+	@Column(columnDefinition = "uuid")
 	@Type(type = "uuid-char")
     private UUID id;
+	
+	@Column(columnDefinition = "uuid")
+	@Type(type = "uuid-char")
 	private UUID courseId;
+	
+	@Column(columnDefinition = "uuid")
+	@Type(type = "uuid-char")
     private UUID educatorId;
+	
+	@Column(columnDefinition = "uuid")
+	@Type(type = "uuid-char")
     private UUID learnerId;
+	
     private String learnerFile;
     
 	public UUID getId() {

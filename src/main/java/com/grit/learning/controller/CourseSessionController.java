@@ -32,6 +32,7 @@ import com.grit.learning.model.CourseSession;
 import com.grit.learning.service.CourseSessionService;
 import com.grit.learning.service.FileService;
 import com.grit.learning.service.MessagePropertyService;
+import com.grit.learning.util.GritUtil;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -65,7 +66,8 @@ public class CourseSessionController {
 			@RequestParam(value = "title") String title,
 			@RequestParam(value = "scheduledTime") String scheduledTime,
 			@RequestParam(value = "description") String description,
-			@RequestParam(value = "educatorId") String educatorId
+			@RequestParam(value = "educatorId") String educatorId,
+			@RequestParam(value = "courseLink") String courseLink
 			) throws Exception{
 
 		TransactionContext context = responseGenerator.generateTransationContext(httpHeader);
@@ -79,6 +81,8 @@ public class CourseSessionController {
 			request.setEducatorId(educatorId);
 			request.setScheduledTime(Timestamp.valueOf(scheduledTime));
 			request.setDescription(description);
+			request.setCourseLink(courseLink);
+			
 			courseSessionService.saveOrUpdate(request);
 			return responseGenerator.successGetResponse(context, messageSource.getMessage("course.session.create"),
 				null, HttpStatus.OK);
@@ -122,11 +126,11 @@ public class CourseSessionController {
 		try {
 			
 			List<CourseSession> courseSessionList = courseSessionService.findByEducatorId(educatorId);
-			List<CourseSessionDTO> response = new ArrayList<>();
-			//Users users = usersRepository.findByUserName("arul");
-			//Users users = usersRepository.findById(educatorId).get();
-			//String name = bucketUrl + users.getUserName()+"/";
+			HashMap<String,List<CourseSessionDTO>> response = new HashMap<>();
+			List<CourseSessionDTO> responseDto = new ArrayList<>();
+			List<CourseSessionDTO> currentLinkResponse = new ArrayList<>();
 			
+			Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
 			for(CourseSession courseSession :courseSessionList) {
 				CourseSessionDTO courseSessionDTO = new CourseSessionDTO();
 				courseSessionDTO.setId(courseSession.getId());
@@ -138,8 +142,24 @@ public class CourseSessionController {
 				courseSessionDTO.setPdfDocumentName(courseSession.getDocFile());
 				courseSessionDTO.setCourseImageName(courseSession.getCourseImage());
 				courseSessionDTO.setBucketUrl(bucketUrl);
-				response.add(courseSessionDTO);
+				courseSessionDTO.setCourseLink(courseSession.getCourseLink());
+				
+				long diff = GritUtil.diffInMinutes(currentTimestamp, courseSession.getScheduledTime()); 
+				
+				System.out.println("****************"+diff);
+				if(courseSession.getCourseLink() != null && !courseSession.getCourseLink().isEmpty()) {
+					if(diff > -10 && diff < 30) {
+						currentLinkResponse.add(courseSessionDTO);
+					} else {
+						responseDto.add(courseSessionDTO);
+					}
+				} else {
+					responseDto.add(courseSessionDTO);
+				}
+				
 			}
+			response.put("response",responseDto);
+			response.put("currentLinkResponse",currentLinkResponse);
 			
 			
 			
@@ -174,10 +194,19 @@ public class CourseSessionController {
 				courseSessionDTO.setPdfDocumentName(courseSession.getDocFile());
 				courseSessionDTO.setCourseImageName(courseSession.getCourseImage());
 				courseSessionDTO.setBucketUrl(bucketUrl);
+				courseSessionDTO.setCourseLink(courseSession.getCourseLink());
 				
 				int flag = currentTimestamp.compareTo(courseSession.getScheduledTime()); 
 				if(flag>=0) {
-					activeResponse.add(courseSessionDTO);
+					long diff = GritUtil.diffInMinutes(currentTimestamp, courseSession.getScheduledTime());
+					System.out.println("****************"+diff);
+					if(courseSession.getCourseLink() != null && !courseSession.getCourseLink().isEmpty()) {
+						if(diff < 30) {
+							activeResponse.add(courseSessionDTO);
+						}
+					} else {
+						activeResponse.add(courseSessionDTO);
+					}
 				} else {
 					inActiveResponse.add(courseSessionDTO);
 				}

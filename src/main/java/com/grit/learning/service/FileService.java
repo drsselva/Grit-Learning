@@ -47,10 +47,12 @@ public class FileService {
 	        s3Client.putObject(new PutObjectRequest(bucketName,directoryPath + "/"+ filePdfName, filepdfObj));
 	        filepdfObj.delete();
 	        
-	        File filevideoObj = convertMultiPartFileToFile(courseSession.getVideoDoument());
-	        String filevideoName = courseSession.getVideoDoument().getOriginalFilename();
-	        s3Client.putObject(new PutObjectRequest(bucketName, directoryPath + "/"+filevideoName, filevideoObj));
-	        filevideoObj.delete();
+	        	if(!courseSession.getVideoDoument().isEmpty()) {
+			        File filevideoObj = convertMultiPartFileToFile(courseSession.getVideoDoument());
+			        String filevideoName = courseSession.getVideoDoument().getOriginalFilename();
+			        s3Client.putObject(new PutObjectRequest(bucketName, directoryPath + "/"+filevideoName, filevideoObj));
+			        filevideoObj.delete();
+		        }
 			
 	    	}
 	    	catch(Exception ex) {
